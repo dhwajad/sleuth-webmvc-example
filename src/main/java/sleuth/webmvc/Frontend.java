@@ -20,7 +20,13 @@ public class Frontend {
 
   @RequestMapping("/")
   public String printTraceIds() {
-    return "Current Trace/Span: " + tracer.currentSpan().context().toString() + "<br/><br/> New Trace/Span: " + tracer.newTrace().context().toString();
+    return "Current Trace/Span/ParentSpan: "
+            + tracer.currentSpan().context().toString()
+            + "/" + tracer.currentSpan().context().parentId()
+            + "<br/><br/> New Trace/Span/ParentSpan: "
+            + tracer.newTrace().context().toString()
+            + "/"
+            + tracer.currentSpan().context().parentId();
 
   }
 
