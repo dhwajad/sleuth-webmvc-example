@@ -1,5 +1,6 @@
 package sleuth.webmvc;
 
+import brave.Span;
 import brave.Tracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,13 +21,20 @@ public class Frontend {
 
   @RequestMapping("/")
   public String printTraceIds() {
-    return "Current Trace/Span/ParentSpan: "
-            + tracer.currentSpan().context().toString()
-            + "/" + tracer.currentSpan().context().parentId()
-            + "<br/><br/> New Trace/Span/ParentSpan: "
-            + tracer.newTrace().context().toString()
+      Span currentSpan = tracer.currentSpan();
+      Span newTrace = tracer.newTrace();
+    return "Current Trace/Span/ParentSpan/Sampled: "
+            + currentSpan.context().toString()
             + "/"
-            + tracer.currentSpan().context().parentId();
+            + currentSpan.context().parentId()
+            + "/"
+            + currentSpan.context().sampled()
+            + "<br/><br/> New Trace/Span/ParentSpan/Sampled: "
+            + newTrace.context().toString()
+            + "/"
+            + newTrace.context().parentId()
+            + "/"
+            + newTrace.context().sampled();
 
   }
 
